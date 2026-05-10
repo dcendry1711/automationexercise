@@ -1,5 +1,4 @@
 export const userAccInfoForm = {
-    password: '1234',
     dayOfBirth: '1',
     monthOfBirth: '1',
     yearOfBirth: '2000',

@@ -83,6 +83,22 @@ export class UserLifecycle{
         await expect(this.navbar.loggedInUser).toContainText(usersArr[0].userName);
     }
 
+    async navigateToLoginPage(){
+        await this.navbar.signupLoginLink.click();
+        await expect(this.loginPage.loginUserHeader).toBeVisible();
+    }
+
+    async loginWithIncorrectUserData(){
+        const wrongEmail = 'wrongEmail@test.com';
+        const wrongPassword = 'wrongPassword';
+
+        await this.loginPage.loginEmail.fill(wrongEmail);
+        await this.loginPage.loginPassword.fill(wrongPassword);
+        await this.loginPage.loginBtn.click();
+
+        await expect(this.loginPage.loginErrMsg).toBeVisible();
+    }
+
     constructor(private page: Page){
         this.navbar = new Navbar(page);
         this.homePage = new HomePage(page);

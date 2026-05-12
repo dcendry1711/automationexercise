@@ -1,6 +1,7 @@
 import { expect, test } from "../fixtures/aC.fixture"
 import { GoToHomePage } from "../flows/goToHomePage.flow";
 import { UserLifecycle } from "../flows/userLifecycle.flow";
+import { SubmitContactForm } from "../flows/submitContactForm.flow";
 
 test.describe("Automation exercise test cases", () => {
 
@@ -45,10 +46,32 @@ test.describe("Automation exercise test cases", () => {
     test("TC05 - Login user with incorrect email and password", async({ page }) =>{
         const userLifecycle = new UserLifecycle(page)
         //go to login page and verify display of login page
-        await userLifecycle.navbar.signupLoginLink.click();
-        await expect(userLifecycle.loginPage.loginUserHeader).toBeVisible();
+        await userLifecycle.navigateToLoginPage();
         //login with incorrect user data and verify error message display
-        await userLifecycle.loginPage.loginWithIncorrectData();
-        await expect(userLifecycle.loginPage.loginErrMsg).toBeVisible();
+        await userLifecycle.loginWithIncorrectUserData();
+    })
+
+    test("TC06 - Contact Us Form", async({ page }) => {
+        const submitContactForm = new SubmitContactForm(page);
+        //proceed full process of submit contact form 
+        await submitContactForm.fullProcess();
+    })
+
+    test("TC07 - Verify Test Cases Page", async({ page, navbar }) => {
+        //navigate to test cases page
+        await navbar.testCasesLink.click();
+        //verify navigation to test cases page successfully
+        expect(page.url()).toContain('/test_cases')
+    })
+
+    test("TC08 - Verify all products and product detail page", async({ productsPage, productDetailsPage }) => {
+        //navigate to products page, verify of navigate to site
+        await productsPage.navigateToPage();
+        //verify of products list visibility
+        await productsPage.verifyProductsListVisibility();
+        //navigate to first product on product list detail page
+        await productsPage.view1stProductDetails();
+        //verify visibility of product details
+        await productDetailsPage.verifyVisibilityOfProductDetails();
     })
 })

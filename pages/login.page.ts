@@ -15,15 +15,6 @@ export class LoginPage{
     loginBtn: Locator;
     loginErrMsg: Locator;
 
-    async loginWithIncorrectData(){
-        const wrongEmail = 'wrongEmail@test.com';
-        const wrongPassword = 'wrongPassword';
-
-        await this.loginEmail.fill(wrongEmail);
-        await this.loginPassword.fill(wrongPassword);
-        await this.loginBtn.click();
-    }
-
     constructor(private page: Page){
         this.newUserSignupHeader = page.getByRole('heading', { name: 'New User Signup!' });
         this.newUserName = page.getByRole('textbox', { name: 'Name' });

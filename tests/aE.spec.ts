@@ -74,4 +74,18 @@ test.describe("Automation exercise test cases", () => {
         //verify visibility of product details
         await productDetailsPage.verifyVisibilityOfProductDetails();
     })
+
+    test("TC09 - Search product", async({ productsPage }) => {
+        //navigate to products page with verification
+        await productsPage.navigateToPage();
+        //type, search, and verify searching product data
+        await productsPage.typeAndSearchAndVerifyProduct();
+    })
+
+    test("TC10 - Verify subscription in home page", async({ homePage }) => {
+        //verify text subscription on home page footer
+        await expect(homePage.footerSubscriptionHeader).toContainText('Subscription');
+        //fill, submit subscription form and verify success message after submit
+        await homePage.submitSubscriptionWithVerification();
+    })
 })

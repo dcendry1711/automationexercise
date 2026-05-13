@@ -6,7 +6,12 @@ export class ProductsPage {
     navbar: Navbar;
     allProductsHeader: Locator;
     productsList: Locator;
+    productNames: Locator;
     viewProductBtnOf1stProduct: Locator;
+    searchProductInput: Locator;
+    searchProductBtn: Locator;
+    searchedProductsListHeader: Locator;
+    searchedProductsList: Locator;
 
     async navigateToPage(){
         await this.navbar.productsLink.click();
@@ -22,10 +27,23 @@ export class ProductsPage {
         expect(this.page.url()).toContain('/product_details/1')
     }
 
+    async typeAndSearchAndVerifyProduct(){
+        const productNamesArr: string[] = await this.productNames.allTextContents();
+        await this.searchProductInput.fill(productNamesArr[0]);
+        await this.searchProductBtn.click();
+        await expect(this.searchedProductsListHeader).toBeVisible();
+        await expect(this.searchedProductsList).toContainText(productNamesArr[0]);
+    }
+
     constructor(private page: Page) {
         this.navbar = new Navbar(page);
         this.allProductsHeader = page.getByRole('heading', { name: 'All Products' });
         this.productsList = page.getByText('All Products  Added! Your');
+        this.productNames = page.locator('.features_items .productinfo p');
         this.viewProductBtnOf1stProduct = page.getByRole('link', { name: ' View Product' }).first();
+        this.searchProductInput = page.getByRole('textbox', { name: 'Search Product' });
+        this.searchProductBtn = page.locator('#submit_search');
+        this.searchedProductsListHeader = page.getByRole('heading', { name: 'Searched Products' });
+        this.searchedProductsList = page.getByText('Searched Products  Added!');
     }
 }

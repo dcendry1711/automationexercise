@@ -6,6 +6,10 @@ export class CartPage{
     footer: Footer;
     firstProductInCart: Locator;
 
+    getCartProductRow(rowNumber: number){
+        return this.page.locator(`#product-${rowNumber}`);
+    }
+
     constructor(private page: Page){
         this.footer = new Footer(page);
         this.firstProductInCart = page.locator('#product-1');

@@ -64,9 +64,10 @@ test.describe("Automation exercise test cases", () => {
         expect(page.url()).toContain('/test_cases')
     })
 
-    test("TC08 - Verify all products and product detail page", async({ productsPage, productDetailsPage }) => {
+    test("TC08 - Verify all products and product detail page", async({ navbar ,productsPage, productDetailsPage }) => {
         //navigate to products page, verify of navigate to site
-        await productsPage.navigateToPage();
+        await navbar.productsLink.click();
+        await productsPage.verificationPage();
         //verify of products list visibility
         await productsPage.verifyProductsListVisibility();
         //navigate to first product on product list detail page
@@ -75,17 +76,37 @@ test.describe("Automation exercise test cases", () => {
         await productDetailsPage.verifyVisibilityOfProductDetails();
     })
 
-    test("TC09 - Search product", async({ productsPage }) => {
+    test("TC09 - Search product", async({ navbar , productsPage }) => {
         //navigate to products page with verification
-        await productsPage.navigateToPage();
+        await navbar.productsLink.click();
+        await productsPage.verificationPage();
         //type, search, and verify searching product data
         await productsPage.typeAndSearchAndVerifyProduct();
     })
 
     test("TC10 - Verify subscription in home page", async({ homePage }) => {
         //verify text subscription on home page footer
-        await expect(homePage.footerSubscriptionHeader).toContainText('Subscription');
+        await expect(homePage.footer.footerSubscriptionHeader).toContainText('Subscription');
         //fill, submit subscription form and verify success message after submit
-        await homePage.submitSubscriptionWithVerification();
+        await homePage.footer.submitSubscriptionWithVerification();
+    })
+
+    test("TC11 - Verify subscription in Cart page", async({ navbar, cartPage }) => {
+        //navigate to cart page
+        await navbar.cartLink.click();
+        //verification subscription header in footer section
+        await expect(cartPage.footer.footerSubscriptionHeader).toContainText('Subscription');
+        //fill, submit subscription form and verify success message after submit
+        await cartPage.footer.submitSubscriptionWithVerification();
+    })
+
+    test.only("TC12 - Add Products in Cart", async({ navbar, productsPage, cartPage }) => {
+        //navigate to products page
+        await navbar.productsLink.click();
+        //add 1st product on list to cart
+        await productsPage.addToCart1stProdBtn.click();
+        await productsPage.viewCartLinkOnModal.click();
+        expect(cartPage.firstProductInCart).toContainText('500');
+        expect(cartPage.firstProductInCart).toContainText('1');
     })
 })

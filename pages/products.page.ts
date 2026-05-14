@@ -12,9 +12,10 @@ export class ProductsPage {
     searchProductBtn: Locator;
     searchedProductsListHeader: Locator;
     searchedProductsList: Locator;
+    addToCart1stProdBtn: Locator;
+    viewCartLinkOnModal: Locator;
 
-    async navigateToPage(){
-        await this.navbar.productsLink.click();
+    async verificationPage(){
         await expect(this.allProductsHeader).toBeVisible();
     }
 
@@ -45,5 +46,7 @@ export class ProductsPage {
         this.searchProductBtn = page.locator('#submit_search');
         this.searchedProductsListHeader = page.getByRole('heading', { name: 'Searched Products' });
         this.searchedProductsList = page.getByText('Searched Products  Added!');
+        this.addToCart1stProdBtn = page.locator('a[data-product-id="1"]').first();
+        this.viewCartLinkOnModal = page.locator('.modal-content a');
     }
 }

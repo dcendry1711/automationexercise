@@ -12,8 +12,8 @@ export class ProductsPage {
     searchProductBtn: Locator;
     searchedProductsListHeader: Locator;
     searchedProductsList: Locator;
-    addToCart1stProdBtn: Locator;
     viewCartLinkOnModal: Locator;
+    continueShoppingLinkModal: Locator;
 
     async verificationPage(){
         await expect(this.allProductsHeader).toBeVisible();
@@ -25,7 +25,7 @@ export class ProductsPage {
 
     async view1stProductDetails(){
         await this.viewProductBtnOf1stProduct.click();
-        expect(this.page.url()).toContain('/product_details/1')
+        expect(this.page.url()).toContain('/product_details/1');
     }
 
     async typeAndSearchAndVerifyProduct(){
@@ -34,6 +34,15 @@ export class ProductsPage {
         await this.searchProductBtn.click();
         await expect(this.searchedProductsListHeader).toBeVisible();
         await expect(this.searchedProductsList).toContainText(productNamesArr[0]);
+    }
+
+    getProductLocator(productId: string){
+        return this.page.locator(`a[data-product-id="${productId}"]`);
+    }
+
+    async addProductToCart(productId: string){
+        const prodLocator = this.getProductLocator(productId).first();
+        await prodLocator.click();
     }
 
     constructor(private page: Page) {
@@ -46,7 +55,7 @@ export class ProductsPage {
         this.searchProductBtn = page.locator('#submit_search');
         this.searchedProductsListHeader = page.getByRole('heading', { name: 'Searched Products' });
         this.searchedProductsList = page.getByText('Searched Products  Added!');
-        this.addToCart1stProdBtn = page.locator('a[data-product-id="1"]').first();
         this.viewCartLinkOnModal = page.locator('.modal-content a');
+        this.continueShoppingLinkModal = page.locator('.modal-footer button');
     }
 }

@@ -104,13 +104,15 @@ test.describe("Automation exercise test cases", () => {
         //navigate to products page
         await navbar.productsLink.click();
         //add 1st product on list to cart
-        await productsPage.addToCart1stProdBtn.click();
+        await productsPage.addProductToCart("1");
+        //continue shopping
+        await productsPage.continueShoppingLinkModal.click();
+        //add 2nd product on list to cart
+        await productsPage.addProductToCart("2");
+        //go to cart page
         await productsPage.viewCartLinkOnModal.click();
-        //check product data added to cart
-        const cart1ProductRow = cartPage.getCartProductRow(1);
-        expect(cart1ProductRow.locator('.cart_description a')).toContainText('Blue Top');
-        expect(cart1ProductRow.locator('.cart_price p')).toContainText('Rs. 500');
-        expect(cart1ProductRow.locator('.cart_quantity button')).toContainText('1');
-        expect(cart1ProductRow.locator('.cart_total p')).toContainText('Rs. 500');
+        //verify products added to cart
+        await cartPage.verify1stProductInCart();
+        await cartPage.verify2ndProductInCart();
     })
 })

@@ -1,9 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test"
 import { Navbar } from "../components/navigation.component";
+import { PurchaseModal } from "../components/purchaseModal.component";
 
 export class ProductsPage {
 
     navbar: Navbar;
+    purchaseModal: PurchaseModal;
     allProductsHeader: Locator;
     productsList: Locator;
     productNames: Locator;
@@ -12,8 +14,6 @@ export class ProductsPage {
     searchProductBtn: Locator;
     searchedProductsListHeader: Locator;
     searchedProductsList: Locator;
-    viewCartLinkOnModal: Locator;
-    continueShoppingLinkModal: Locator;
 
     async verificationPage(){
         await expect(this.allProductsHeader).toBeVisible();
@@ -47,6 +47,7 @@ export class ProductsPage {
 
     constructor(private page: Page) {
         this.navbar = new Navbar(page);
+        this.purchaseModal = new PurchaseModal(page);
         this.allProductsHeader = page.getByRole('heading', { name: 'All Products' });
         this.productsList = page.getByText('All Products  Added! Your');
         this.productNames = page.locator('.features_items .productinfo p');
@@ -55,7 +56,5 @@ export class ProductsPage {
         this.searchProductBtn = page.locator('#submit_search');
         this.searchedProductsListHeader = page.getByRole('heading', { name: 'Searched Products' });
         this.searchedProductsList = page.getByText('Searched Products  Added!');
-        this.viewCartLinkOnModal = page.locator('.modal-content a');
-        this.continueShoppingLinkModal = page.locator('.modal-footer button');
     }
 }

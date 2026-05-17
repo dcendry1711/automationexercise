@@ -23,9 +23,7 @@ export class UserLifecycle{
 
         //generate new user name and email
         generateNewUserData()
-        //navigate to login page
-        await this.navbar.signupLoginLink.click();
-
+        
         //verify display of login page, fill new user registration form and proceed
         await expect(this.loginPage.newUserSignupHeader).toBeVisible();
         await this.loginPage.newUserName.fill(usersArr[0].userName);

@@ -36,12 +36,12 @@ export class ProductsPage {
         await expect(this.searchedProductsList).toContainText(productNamesArr[0]);
     }
 
-    getProductLocator(productId: string){
+    getProductLocatorToOrder(productId: string){
         return this.page.locator(`a[data-product-id="${productId}"]`);
     }
 
     async addProductToCart(productId: string){
-        const prodLocator = this.getProductLocator(productId).first();
+        const prodLocator = this.getProductLocatorToOrder(productId).first();
         await prodLocator.click();
     }
 

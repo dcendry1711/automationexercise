@@ -110,19 +110,25 @@ test.describe("Automation exercise test cases", () => {
     })
 
     test("TC12 - Add Products in Cart", async({ navbar, productsPage, cartPage }) => {
+        const addedProducts = [];
         //navigate to products page
         await navbar.productsLink.click();
+        
         //add 1st product on list to cart
+        addedProducts.push(await productsPage.getProductInfo("1"));
         await productsPage.addProductToCartOnProductsPage("1");
         //continue shopping
         await productsPage.purchaseModal.continueShoppingLinkModal.click();
+        
         //add 2nd product on list to cart
+        addedProducts.push(await productsPage.getProductInfo("2"));
         await productsPage.addProductToCartOnProductsPage("2");
+        
         //go to cart page
         await productsPage.purchaseModal.viewCartLinkOnModal.click();
+        
         //verify products added to cart
-        await cartPage.verify1stProductInCart();
-        await cartPage.verify2ndProductInCart();
+        await cartPage.verifyProductsInCart(addedProducts);
     })
 
     test("TC13 - Verify Product quantity in Cart", async({ homePage, productDetailsPage, cartPage }) => {
@@ -165,6 +171,7 @@ test.describe("Automation exercise test cases", () => {
         await checkoutPage.commentOrderTextArea.fill('test comment');
         await checkoutPage.placeOrderBtn.click();
         //enter payment details
+        await paymentPage.nameOnCard.waitFor({ state: 'visible', timeout: 60000 });
         await paymentPage.nameOnCard.fill(`${userAccInfoForm.firstName} ${userAccInfoForm.lastName}`);
         await paymentPage.cardNumber.fill('1111111111111111');
         await paymentPage.cvc.fill('111');

@@ -9,6 +9,9 @@ import { ContactUsPage } from "../pages/contactUs.page";
 import { ProductsPage } from "../pages/products.page";
 import { ProductDetailsPage } from "../pages/productDetails.page";
 import { CartPage } from "../pages/cart.page";
+import { CheckoutPage } from "../pages/checkout.page";
+import { PaymentPage } from "../pages/payment.page";
+import { PaymentDonePage } from "../pages/paymentDone.page";
 
 type AcFixture = {
     navbar: Navbar;
@@ -21,6 +24,9 @@ type AcFixture = {
     productsPage: ProductsPage;
     productDetailsPage: ProductDetailsPage;
     cartPage: CartPage;
+    checkoutPage: CheckoutPage;
+    paymentPage: PaymentPage;
+    paymentDonePage: PaymentDonePage;
 }
 
 export const test = base.extend<AcFixture>({
@@ -53,6 +59,15 @@ export const test = base.extend<AcFixture>({
     },
     cartPage: async({ page }, use) => {
         await use(new CartPage(page));
+    },
+    checkoutPage: async({ page }, use) => {
+        await use(new CheckoutPage(page));
+    },
+    paymentPage: async({ page }, use) => {
+        await use(new PaymentPage(page));
+    },
+    paymentDonePage: async({ page }, use) => {
+        await use(new PaymentDonePage(page));
     }
 })
 

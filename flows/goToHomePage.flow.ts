@@ -7,7 +7,15 @@ export class GoToHomePage{
 
     async loadAndVerifyContent(){
         await this.page.goto('');
-        await this.homePage.consentBtn.click();
+        
+        // Próba kliknięcia przycisku zgody, jeśli jest widoczny
+        try {
+            await this.homePage.consentBtn.waitFor({ state: 'visible', timeout: 5000 });
+            await this.homePage.consentBtn.click();
+        } catch (e) {
+            console.log('Przycisk zgody nie pojawił się, pomijam kliknięcie.');
+        }
+
         await expect(this.homePage.pageHeader).toBeVisible();
     }
 

@@ -1,9 +1,9 @@
 import { Locator, Page, expect } from "@playwright/test"
-import { PurchaseModal } from "../components/purchaseModal.component";
+import { Modal } from "../components/modal.component";
 
 export class ProductDetailsPage {
 
-    purchaseModal: PurchaseModal;
+    purchaseModal: Modal;
     productName: Locator;
     productCategory: Locator;
     productPrice: Locator;
@@ -28,7 +28,7 @@ export class ProductDetailsPage {
     }
 
     constructor(private page: Page) {
-        this.purchaseModal = new PurchaseModal(page);
+        this.purchaseModal = new Modal(page);
         this.productName = page.getByRole('heading', { name: 'Blue Top' });
         this.productCategory = page.getByText('Category: Women > Tops');
         this.productPrice = page.getByText('Rs.');

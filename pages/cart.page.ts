@@ -1,9 +1,12 @@
 import { Locator, Page, expect } from "@playwright/test"
 import { Footer } from "../components/footer.component"
+import { Modal } from "../components/modal.component";
 export class CartPage{
 
     footer: Footer;
+    modal: Modal;
     firstProductInCart: Locator;
+    proceedToCheckoutBtn: Locator;
 
 
     getCartProductRow(rowNumber: number){
@@ -33,6 +36,8 @@ export class CartPage{
 
     constructor(private page: Page){
         this.footer = new Footer(page);
+        this.modal = new Modal(page);
         this.firstProductInCart = page.locator('#product-1');
+        this.proceedToCheckoutBtn = page.locator('a.check_out');
     }
 }

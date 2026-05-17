@@ -106,13 +106,25 @@ test.describe("Automation exercise test cases", () => {
         //add 1st product on list to cart
         await productsPage.addProductToCart("1");
         //continue shopping
-        await productsPage.continueShoppingLinkModal.click();
+        await productsPage.purchaseModal.continueShoppingLinkModal.click();
         //add 2nd product on list to cart
         await productsPage.addProductToCart("2");
         //go to cart page
-        await productsPage.viewCartLinkOnModal.click();
+        await productsPage.purchaseModal.viewCartLinkOnModal.click();
         //verify products added to cart
         await cartPage.verify1stProductInCart();
         await cartPage.verify2ndProductInCart();
     })
+
+    test("TC13 - Verify Product quantity in Cart", async({ homePage, productDetailsPage, cartPage }) => {
+        //Click 'view product' for 1st product on page, verify display of selected product details page
+        await homePage.viewProductDetailsOnHomePage("1");
+        //fill ordered product quantity input, add product to cart and move to cart page
+        await productDetailsPage.specifyQuantityAndOrderProduct('4');
+        await productDetailsPage.purchaseModal.viewCartLinkOnModal.click();
+        //verify ordered product quantity in cart
+        await cartPage.verifyProductQuantityInCart(1,'4');
+    })
+
+    
 })

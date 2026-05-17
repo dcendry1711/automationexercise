@@ -1,6 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test"
 import { Navbar } from "../components/navigation.component";
 import { Modal } from "../components/modal.component";
+import { Product } from "../types/product";
 
 export class ProductsPage {
 
@@ -38,6 +39,18 @@ export class ProductsPage {
 
     getProductLocatorToOrder(productId: string){
         return this.page.locator(`a[data-product-id="${productId}"]`);
+    }
+
+    async getProductInfo(productId: string): Promise<Product> {
+        const productRow = this.page.locator(`.features_items .single-products`).filter({ has: this.page.locator(`a[data-product-id="${productId}"]`) });
+        const name = await productRow.locator('p').first().textContent();
+        const price = await productRow.locator('h2').first().textContent();
+        
+        return {
+            name: name?.trim() || '',
+            price: price?.trim() || '',
+            quantity: '1'
+        };
     }
 
     async addProductToCartOnProductsPage(productId: string){

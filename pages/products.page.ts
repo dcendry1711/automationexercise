@@ -1,11 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test"
 import { Navbar } from "../components/navigation.component";
-import { PurchaseModal } from "../components/purchaseModal.component";
+import { Modal } from "../components/modal.component";
 
 export class ProductsPage {
 
     navbar: Navbar;
-    purchaseModal: PurchaseModal;
+    purchaseModal: Modal;
     allProductsHeader: Locator;
     productsList: Locator;
     productNames: Locator;
@@ -40,14 +40,14 @@ export class ProductsPage {
         return this.page.locator(`a[data-product-id="${productId}"]`);
     }
 
-    async addProductToCart(productId: string){
+    async addProductToCartOnProductsPage(productId: string){
         const prodLocator = this.getProductLocatorToOrder(productId).first();
         await prodLocator.click();
     }
 
     constructor(private page: Page) {
         this.navbar = new Navbar(page);
-        this.purchaseModal = new PurchaseModal(page);
+        this.purchaseModal = new Modal(page);
         this.allProductsHeader = page.getByRole('heading', { name: 'All Products' });
         this.productsList = page.getByText('All Products  Added! Your');
         this.productNames = page.locator('.features_items .productinfo p');

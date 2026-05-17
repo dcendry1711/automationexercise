@@ -26,6 +26,11 @@ export class CartPage{
         await expect(cart2ProductRow.locator('.cart_total p')).toContainText('Rs. 400');
     }
 
+    async verifyProductQuantityInCart(row: number, expectedQuantity: string){
+        const productInCartRow = this.getCartProductRow(row);
+        await expect(productInCartRow.locator('.cart_quantity button')).toContainText(expectedQuantity);
+    }
+
     constructor(private page: Page){
         this.footer = new Footer(page);
         this.firstProductInCart = page.locator('#product-1');

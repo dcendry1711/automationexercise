@@ -29,7 +29,7 @@ export class CheckoutPage{
         await expect(secondProductLocator.locator('.cart_total p')).toContainText('Rs. 400');
     }
 
-    async verifyUserAddressAndOrder(){
+    async verifyAddressOrderAddComment(){
         expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.firstName);
         expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.lastName);
         expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.address);

@@ -3,6 +3,7 @@ import { GoToHomePage } from "../flows/goToHomePage.flow";
 import { UserLifecycle } from "../flows/userLifecycle.flow";
 import { SubmitContactForm } from "../flows/submitContactForm.flow";
 import { userAccInfoForm } from "../data/userAccInfoForm.data";
+import { PurchaseProcess } from "../flows/purchaseProccess.flow";
 
 test.describe("Automation exercise test cases", () => {
 
@@ -141,31 +142,30 @@ test.describe("Automation exercise test cases", () => {
         await cartPage.verifyProductQuantityInCart(1,'4');
     })
 
-    test("TC14 - Place Order: Register while Checkout", async({ page, navbar, homePage, cartPage, checkoutPage, paymentPage, paymentDonePage }) => {
+    test("TC14 - Place Order: Register while Checkout", async({ page, navbar }) => {
         const userLifecycle = new UserLifecycle(page);
-        //add products to cart on home page
-        await homePage.addProductsToCart();
-        //move to cart page
-        await homePage.moveToCartPage();
-        //proceed to checkout from cart page
-        await cartPage.proceedToCheckoutBtn.click();
-        //begin of new user register path
-        await cartPage.modal.registerLoginLinkOnModal.click();
-        //register new user full process, and proceed checkout one more time
+        const purchaseProcess = new PurchaseProcess(page);
+        //purchase process part 1 - before registration new user
+        await purchaseProcess.purchaseProcessWithRegisterWhileCheckoutPt1();
+        //register new user full process
         await userLifecycle.registerNewUser();
         await navbar.cartLink.click();
-        await cartPage.proceedToCheckoutBtn.click();
-        //verify user address, order and place comment in text area before place order
-        await checkoutPage.verifyUserAddressAndOrder();
-        //place order
-        await checkoutPage.placeOrderBtn.click();
-        //enter payment details
-        await paymentPage.fillPaymentInformation();
-        //finish purchase process
-        await paymentPage.payAndConfirmBtn.click();
-        //Verify success message 'Your order has been placed successfully!'
-        await paymentDonePage.verifyDisplaySuccesMsg();
+        //purchase process part 2 - continue after register new user
+        await purchaseProcess.purchaseProcessWithRegisterWhileCheckoutPt2();
         //delete registered user
+        await userLifecycle.deleteUserAcc();
+    })
+
+    test("TC15 - Place Order: Register before Checkout", async({ page, navbar }) => {
+        const userLifecycle = new UserLifecycle(page);
+        const purchaseProcess = new PurchaseProcess(page);
+        //move to signup page
+        await navbar.signupLoginLink.click();
+        //register new user - full process
+        await userLifecycle.registerNewUser();
+        //full purchase process
+        await purchaseProcess.fullPurchaseProcess();
+        //delete user account
         await userLifecycle.deleteUserAcc();
     })
 })

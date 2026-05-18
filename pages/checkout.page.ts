@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test"
+import { userAccInfoForm } from "../data/userAccInfoForm.data";
 
 export class CheckoutPage{
 
@@ -26,6 +27,21 @@ export class CheckoutPage{
         await expect(secondProductLocator.locator('.cart_price p')).toContainText('Rs. 400');
         await expect(secondProductLocator.locator('.cart_quantity button')).toContainText('1');
         await expect(secondProductLocator.locator('.cart_total p')).toContainText('Rs. 400');
+    }
+
+    async verifyUserAddressAndOrder(){
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.firstName);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.lastName);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.address);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.address2);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.city);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.state);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.zipcode);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.country);
+        expect(this.deliveryAddressBlock).toContainText(userAccInfoForm.mobileNumber);
+        await this.rewiev1stProduct();
+        await this.review2ndProduct();
+        await this.commentOrderTextArea.fill('test comment');
     }
 
     constructor(private page: Page){

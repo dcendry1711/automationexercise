@@ -144,42 +144,28 @@ test.describe("Automation exercise test cases", () => {
     test("TC14 - Place Order: Register while Checkout", async({ page, navbar, homePage, cartPage, checkoutPage, paymentPage, paymentDonePage }) => {
         const userLifecycle = new UserLifecycle(page);
         //add products to cart on home page
-        await homePage.addProductToCartOnHomePage("1");
-        await homePage.purchaseModal.continueShoppingLinkModal.click();
-        await homePage.addProductToCartOnHomePage("2");
-        await homePage.purchaseModal.continueShoppingLinkModal.click();
-        await navbar.cartLink.click();
-        expect(page.url()).toContain('/view_cart');
+        await homePage.addProductsToCart();
+        //move to cart page
+        await homePage.moveToCartPage();
+        //proceed to checkout from cart page
         await cartPage.proceedToCheckoutBtn.click();
+        //begin of new user register path
         await cartPage.modal.registerLoginLinkOnModal.click();
+        //register new user full process, and proceed checkout one more time
         await userLifecycle.registerNewUser();
         await navbar.cartLink.click();
         await cartPage.proceedToCheckoutBtn.click();
-        //verify address details and review user order
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.firstName);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.lastName);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.address);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.address2);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.city);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.state);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.zipcode);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.country);
-        expect(checkoutPage.deliveryAddressBlock).toContainText(userAccInfoForm.mobileNumber);
-        await checkoutPage.rewiev1stProduct();
-        await checkoutPage.review2ndProduct();
-        //enter description in comment text area and click place order button
-        await checkoutPage.commentOrderTextArea.fill('test comment');
+        //verify user address, order and place comment in text area before place order
+        await checkoutPage.verifyUserAddressAndOrder();
+        //place order
         await checkoutPage.placeOrderBtn.click();
         //enter payment details
-        await paymentPage.nameOnCard.waitFor({ state: 'visible', timeout: 60000 });
-        await paymentPage.nameOnCard.fill(`${userAccInfoForm.firstName} ${userAccInfoForm.lastName}`);
-        await paymentPage.cardNumber.fill('1111111111111111');
-        await paymentPage.cvc.fill('111');
-        await paymentPage.expirationMonth.fill('12');
-        await paymentPage.expirationYear.fill('2099');
+        await paymentPage.fillPaymentInformation();
+        //finish purchase process
         await paymentPage.payAndConfirmBtn.click();
         //Verify success message 'Your order has been placed successfully!'
-        await expect(paymentDonePage.successMsg).toContainText('Congratulations! Your order has been confirmed!');
+        await paymentDonePage.verifyDisplaySuccesMsg();
+        //delete registered user
         await userLifecycle.deleteUserAcc();
     })
 })

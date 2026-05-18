@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test"
+import { userAccInfoForm } from "../data/userAccInfoForm.data";
 
 export class PaymentPage{
 
@@ -8,6 +9,15 @@ export class PaymentPage{
     expirationMonth: Locator;
     expirationYear: Locator;
     payAndConfirmBtn: Locator;
+
+    async fillPaymentInformation(){
+        await this.nameOnCard.waitFor({ state: 'visible', timeout: 60000 });
+        await this.nameOnCard.fill(`${userAccInfoForm.firstName} ${userAccInfoForm.lastName}`);
+        await this.cardNumber.fill('1111111111111111');
+        await this.cvc.fill('111');
+        await this.expirationMonth.fill('12');
+        await this.expirationYear.fill('2099');
+    }
 
 
     constructor(private page: Page){

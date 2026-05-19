@@ -2,7 +2,6 @@ import { expect, test } from "../fixtures/aC.fixture"
 import { GoToHomePage } from "../flows/goToHomePage.flow";
 import { UserLifecycle } from "../flows/userLifecycle.flow";
 import { SubmitContactForm } from "../flows/submitContactForm.flow";
-import { userAccInfoForm } from "../data/userAccInfoForm.data";
 import { PurchaseProcess } from "../flows/purchaseProccess.flow";
 
 test.describe("Automation exercise test cases", () => {
@@ -167,5 +166,30 @@ test.describe("Automation exercise test cases", () => {
         await purchaseProcess.fullPurchaseProcess();
         //delete user account
         await userLifecycle.deleteUserAcc();
+    })
+
+    test("TC16 - Place Order: Login before Checkout", async({ page, navbar }) =>{
+        const userLifecycle = new UserLifecycle(page);
+        const purchaseProcess = new PurchaseProcess(page);
+        //lgoin user in web app
+        await navbar.signupLoginLink.click();
+        await userLifecycle.loginUserExistingInDb();
+        //full purchase flow - order, verify, confirm payment and success message at the end
+        await purchaseProcess.fullPurchaseProcess(); 
+        //delete user acc
+        await userLifecycle.deleteUserAcc();
+    })
+
+    test("TC17 - Remove products from Cart", async({ homePage, cartPage, productsPage }) => {
+        const addedProducts = []
+        //add products to cart
+        await homePage.addProductsToCart();
+        addedProducts.push(await productsPage.getProductInfo("1"));
+        addedProducts.push(await productsPage.getProductInfo("2"));
+        //move to cart page with verification
+        await homePage.moveToCartPage();
+        //remove selected product from cart
+        await cartPage.removeProductFromCart(1);
+        await cartPage.verifyProductsInCart(addedProducts)
     })
 })

@@ -81,6 +81,12 @@ export class UserLifecycle{
         await expect(this.navbar.loggedInUser).toContainText(usersArr[0].userName);
     }
 
+    async loginUserExistingInDb(){
+        await this.registerNewUser();
+        await this.logoutUser();
+        await this.loginUser();
+    }
+
     async navigateToLoginPage(){
         await this.navbar.signupLoginLink.click();
         await expect(this.loginPage.loginUserHeader).toBeVisible();

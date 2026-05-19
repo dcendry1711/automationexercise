@@ -2,10 +2,12 @@ import { Locator, Page, expect } from "@playwright/test"
 import { Footer } from "../components/footer.component";
 import { Modal } from "../components/modal.component";
 import { Navbar } from "../components/navigation.component";
+import { ProductsPage } from "./products.page";
 
 export class HomePage{
 
     navbar: Navbar;
+    productsPage: ProductsPage;
     purchaseModal: Modal;
     footer: Footer;
     consentBtn: Locator;
@@ -44,6 +46,7 @@ export class HomePage{
 
     constructor(private page: Page){
         this.navbar = new Navbar(page);
+        this.productsPage = new ProductsPage(page);
         this.purchaseModal = new Modal(page);
         this.footer = new Footer(page);
         this.consentBtn = page.locator('p.fc-button-label', {hasText: 'Consent'});
